@@ -12,7 +12,11 @@ module Actions
     # si es valida movemos la serpiente
   end
 
+  def self.change_direccion(state, direction)
+  end
+
   def self.calc_next_position(state)
+    
     curr_position = state.snake.positions.first
     case state.next_direction
     when Model::Direction::UP
