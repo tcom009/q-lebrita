@@ -1,13 +1,11 @@
-require "ruby2d"
-require_relative "../model/state"
+require 'ruby2d'
+require_relative '../model/state'
 
 module View 
-
     class Ruby2dView
-
-        def initialize
-            @pixel_size=100
-            
+        def initialize(app)
+            @pixel_size = 75
+            @app = app
         end
 
         def start(state)
@@ -16,6 +14,9 @@ module View
                 title:"Q-Lebrita", 
                 width:@pixel_size * state.grid.cols, 
                 height:@pixel_size * state.grid.rows)
+            on :key_down do |event|
+                    handle_key_event(event)
+            end 
             show
         end
 
@@ -24,8 +25,7 @@ module View
             render_snake(state) 
         end
 
-        private 
-        
+        private     
         def render_food(state)
             @food.remove if @food
             extend Ruby2D::DSL
@@ -33,8 +33,9 @@ module View
             @food = Square.new(
                 x:food.col*@pixel_size, 
                 y:food.row*@pixel_size,
-                radius: @pixel_size,
-                color: 'orange')
+                size: @pixel_size,
+                color: 'orange'
+            )
         end
 
         def render_snake(state)
@@ -46,9 +47,22 @@ module View
                 x: pos.col * @pixel_size,
                 y: pos.row * @pixel_size,
                 size: @pixel_size,
-                color: 'green'
-        )
+                color: 'green')
             end
         end
-    end
+
+        def handle_key_event(event)
+            case event.key
+                when "up"
+                    return @app.send_action(:change_direction, Model::Direction::UP)
+                when "down"
+                    return @app.send_action(:change_direction, Model::Direction::DOWN)
+                when "left"
+                    return @app.send_action(:change_direction, Model::Direction::LEFT)
+                when "right"
+                    return @app.send_action(:change_direction, Model::Direction::RIGHT)
+                end
+            
+        end
+    end 
 end

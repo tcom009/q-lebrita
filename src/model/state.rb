@@ -15,15 +15,15 @@ module Model
     end
     class Grid < Struct.new(:rows, :cols)
     end 
-    class State < Struct.new(:snake, :grid, :food, :next_direction, :game_finished) 
+    class State < Struct.new(:snake,  :food, :grid, :curr_direction, :game_finished) 
     end
     def self.initial_state
         Model::State.new(
             Model::Snake.new(
                 [Model::Coord.new(1,1),#positions.first
                 Model::Coord.new(0,1)]),
-            Model::Grid.new(8,12),
-            Model::Food.new(4,4),
+                Model::Food.new(4, 4),
+                Model::Grid.new(8, 12),
             Direction::DOWN,
             false
         )
